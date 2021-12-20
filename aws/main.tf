@@ -1,7 +1,10 @@
 # Prerequisits:
 #   - Create a key pair named spring-calendar
 # After apply:
-#   - Populate secrets in /opt/spring-calendar/application-aws.properties
+#   - Populate secrets (GH creds and keystore pass) in /opt/spring-calendar/application-aws.properties
+#   - Copy spring-calendar.p12 into /opt/spring-calendar/spring-calendar.p12
+#   - chmod 440 spring-calendar.p12
+#   - chown spring-calendar spring-calendar.p12
 #   - service spring-calendar restart
 
 terraform {
@@ -45,8 +48,8 @@ resource "aws_eip" "spring-calendar" {
 resource "aws_security_group" "spring-calendar" {
   name = "spring-calendar-sg"
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

@@ -39,6 +39,10 @@ EOF
 cat > /opt/spring-calendar/application-aws.properties <<EOF
 calendar.github.username=user
 calendar.github.password=secret
+server.ssl.enabled=true
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store=spring-calendar.p12
+server.ssl.key-store-password=secret
 EOF
 
 chown -R spring-calendar /opt/spring-calendar
@@ -47,8 +51,8 @@ chmod 440 /opt/spring-calendar/spring-calendar.service
 chmod 550 /opt/spring-calendar/spring-calendar.jar
 chmod 440 /opt/spring-calendar/application-aws.properties
 
-# only root can open low ports like 80
-iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+# only root can open low ports like 443
+iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8080
 
 ln -s /opt/spring-calendar/spring-calendar.service /lib/systemd/system/spring-calendar.service
 systemctl daemon-reload
